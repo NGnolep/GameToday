@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
                 isDashing = false;
                 inDashBuffer = true;
                 dashEndTime = Time.time + dashBufferTime; // Set the buffer end time
+                rb.velocity = Vector3.zero;  // Set velocity to zero after dash ends
             }
         }
         else if (inDashBuffer)

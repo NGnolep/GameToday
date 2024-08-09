@@ -245,7 +245,8 @@ MonoBehaviour:
   speed: 10
   dashSpeed: 15
   dashDuration: 0.1
-  dashCooldown: 0.5
+  dashCooldown: 1.5
+  dashBufferTime: 0.2
 --- !u!54 &76889206
 Rigidbody:
   m_ObjectHideFlags: 0
