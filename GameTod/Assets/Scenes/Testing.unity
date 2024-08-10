@@ -247,6 +247,7 @@ MonoBehaviour:
   dashDuration: 0.1
   dashCooldown: 1.5
   dashBufferTime: 0.2
+  cam: {fileID: 963194228}
 --- !u!54 &76889206
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -804,6 +805,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 76889200}
+  mouseSensitivity: 500
+  distanceFromPlayer: 20
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

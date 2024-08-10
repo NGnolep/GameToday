@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public float dashDuration = 0.2f; // Duration of the dash
     public float dashCooldown = 1.0f; // Cooldown time between dashes
     public float dashBufferTime = 0.2f; // Extra time after dash ends where collisions still count
+    public Transform cam; // Reference to the camera's transform
 
     private bool isDashing = false;
     private bool inDashBuffer = false;
@@ -39,7 +40,15 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
+
+        // Make the movement relative to the camera's direction
+        if (movement.magnitude >= 0.1f)
+        {
+            float targetAngle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
+            movement = rotation * Vector3.forward;
+        }
 
         if (isDashing)
         {
