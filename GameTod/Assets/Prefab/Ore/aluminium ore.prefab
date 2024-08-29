@@ -119,6 +119,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 50
+  Stone: {fileID: 0}
+  Stone1: {fileID: 0}
 --- !u!1 &815584620322411343
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +219,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 50
+  Stone: {fileID: 4112350456721563073}
+  Stone1: {fileID: 0}
 --- !u!65 &4583585582975430143
 BoxCollider:
   m_ObjectHideFlags: 0

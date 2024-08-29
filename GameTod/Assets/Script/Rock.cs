@@ -5,7 +5,8 @@ using UnityEngine;
 public class Rock : MonoBehaviour
 {
     public int hp = 50;  // Starting HP for the rock
-
+    public GameObject Stone;
+    public GameObject Stone1;
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -19,7 +20,8 @@ public class Rock : MonoBehaviour
                 if (hp <= 0)
                 {
                     Debug.Log("Rock destroyed!");
-                    Destroy(gameObject);  // Destroy the rock
+                    Destroy(Stone);
+                    Destroy(Stone1);// Destroy the rock
                 }
                 else
                 {
