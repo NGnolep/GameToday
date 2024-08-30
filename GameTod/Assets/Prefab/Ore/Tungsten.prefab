@@ -127,6 +127,8 @@ GameObject:
   - component: {fileID: 1450485761925989873}
   - component: {fileID: 428792861149767590}
   - component: {fileID: 2445904767164315769}
+  - component: {fileID: 6703317867288102704}
+  - component: {fileID: 2992093320199897290}
   m_Layer: 0
   m_Name: Cylinder.015
   m_TagString: Untagged
@@ -199,3 +201,42 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6703317867288102704
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7408721385376008488}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020684456, y: 0.019046368, z: 0.03539971}
+  m_Center: {x: 0.005100254, y: 0.0014710219, z: -0.02398476}
+--- !u!114 &2992093320199897290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7408721385376008488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b34bf396f54edc45b35e1bf4b59f362, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 50
+  Stone: {fileID: 4840649093725940176}
+  Stone1: {fileID: 0}
+  portalPrefab: {fileID: 0}
+  portalSpawnPoint: {fileID: 0}
+  portalSpawnChance: 15

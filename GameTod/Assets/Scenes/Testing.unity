@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657993, g: 0.49641424, b: 0.57481825, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465797, g: 0.4964139, b: 0.5748177, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -641,6 +641,9 @@ MonoBehaviour:
   hp: 50
   Stone: {fileID: 0}
   Stone1: {fileID: 0}
+  portalPrefab: {fileID: 0}
+  portalSpawnPoint: {fileID: 0}
+  portalSpawnChance: 15
 --- !u!1 &949198959
 GameObject:
   m_ObjectHideFlags: 0
@@ -2255,15 +2258,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3242360026571350136, guid: 390d5540738d5d9499860491cf2e3480, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.76
+      value: 52.65
       objectReference: {fileID: 0}
     - target: {fileID: 3242360026571350136, guid: 390d5540738d5d9499860491cf2e3480, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.439
+      value: 1.62
       objectReference: {fileID: 0}
     - target: {fileID: 3242360026571350136, guid: 390d5540738d5d9499860491cf2e3480, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.47
+      value: 19.38
       objectReference: {fileID: 0}
     - target: {fileID: 3242360026571350136, guid: 390d5540738d5d9499860491cf2e3480, type: 3}
       propertyPath: m_LocalRotation.w

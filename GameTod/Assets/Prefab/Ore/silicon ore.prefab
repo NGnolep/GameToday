@@ -174,6 +174,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 50
+  Stone: {fileID: 191276925885526842}
+  Stone1: {fileID: 0}
+  portalPrefab: {fileID: 0}
+  portalSpawnPoint: {fileID: 0}
+  portalSpawnChance: 15
 --- !u!65 &2873564796344747889
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -193,8 +198,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.17870541, y: 0.16082136, z: 0.1332019}
-  m_Center: {x: 0.07935272, y: -0.053942066, z: 0.025253536}
+  m_Size: {x: 0.17564048, y: 0.16414843, z: 0.1287589}
+  m_Center: {x: 0.07782038, y: -0.05021902, z: 0.025421655}
 --- !u!1 &4254773813943608899
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,8 +211,6 @@ GameObject:
   - component: {fileID: 5983221614287383562}
   - component: {fileID: 5835729939354626187}
   - component: {fileID: 1611084011131232826}
-  - component: {fileID: 3596366684497841586}
-  - component: {fileID: 4928041049359299742}
   m_Layer: 0
   m_Name: Cylinder.006
   m_TagString: Untagged
@@ -280,37 +283,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3596366684497841586
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4254773813943608899}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.03237664, y: 0.03730525, z: 0.04854444}
-  m_Center: {x: 0.0050983103, y: -0.00062413776, z: 0.019815587}
---- !u!114 &4928041049359299742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4254773813943608899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b34bf396f54edc45b35e1bf4b59f362, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 50
