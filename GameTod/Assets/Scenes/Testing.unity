@@ -639,6 +639,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 50
+  Stone: {fileID: 0}
+  Stone1: {fileID: 0}
 --- !u!1 &949198959
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,7 +925,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cc4de9aba5556c342a3004498eb36b1d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2364f7647684ab142a2b69a19d0036e0, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1350,7 +1352,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 130, y: -175}
-  m_SizeDelta: {x: 300, y: 200}
+  m_SizeDelta: {x: 375, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1526809332
 MonoBehaviour:
@@ -1838,15 +1840,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6617874395157896006, guid: 979cb15609d6bcd469766c74fa8057f8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 54.5
+      value: 55.8
       objectReference: {fileID: 0}
     - target: {fileID: 6617874395157896006, guid: 979cb15609d6bcd469766c74fa8057f8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.38
+      value: 6.32
       objectReference: {fileID: 0}
     - target: {fileID: 6617874395157896006, guid: 979cb15609d6bcd469766c74fa8057f8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 36.5
+      value: 27.6
       objectReference: {fileID: 0}
     - target: {fileID: 6617874395157896006, guid: 979cb15609d6bcd469766c74fa8057f8, type: 3}
       propertyPath: m_LocalRotation.w
