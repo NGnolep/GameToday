@@ -180,11 +180,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b34bf396f54edc45b35e1bf4b59f362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 50
+  hp: 15
   Stone: {fileID: 4481245423400954774}
   Stone1: {fileID: 0}
-  portalPrefab: {fileID: 0}
-  portalSpawnPoint: {fileID: 0}
+  portalPrefab: {fileID: 90707141276490278, guid: 4b70fd29d187e3f40af41b3830655f29, type: 3}
+  portalSpawnPoint: {fileID: 3853749037330657580}
   portalSpawnChance: 15
 --- !u!65 &8690254740829544786
 BoxCollider:
