@@ -7,44 +7,77 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
     public float speed;
-    public float dashSpeed = 20.0f;  // Speed during dash
-    public float dashDuration = 0.2f; // Duration of the dash
-    public float dashCooldown = 1.0f; // Cooldown time between dashes
-    public float dashBufferTime = 0.2f; // Extra time after dash ends where collisions still count
-    public Transform cam; // Reference to the camera's transform
+    public float dashSpeed = 20.0f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 1.0f;
+    public float dashBufferTime = 0.2f;
+    public Transform cam;
 
-    public Slider energyBar; // UI Slider for energy (also acts as HP)
-    public float maxEnergy = 100f; // Maximum energy
-    public float currentEnergy; // Current energy
-    public float movementEnergyConsumptionRate = 5f; // Energy consumed per second while moving
+    public Slider energyBar; // UI Slider for energy (fuel)
+    public float maxEnergy = 100f;
+    public float currentEnergy;
+    public float movementEnergyConsumptionRate = 5f;
 
     public Slider shieldBar; // UI Slider for shield
-    public float maxShield = 50f; // Maximum shield
-    public float currentShield; // Current shield
-    public float shieldRecoveryRate = 5f; // Shield recovery rate per second when not taking damage
+    public float maxShield = 50f;
+    public float currentShield;
+    public float shieldRecoveryRate = 5f;
 
-    public float strength = 10f; // Player's strength stat
-    public float weight = 5f; // Player's weight stat
-    public float protection = 5f; // Player's protection stat
+    public float strength = 10f;
+    public float weight = 5f;
+    public float protection = 5f;
 
     private bool isDashing = false;
     private bool inDashBuffer = false;
     private float dashEndTime;
     private float dashCooldownTime;
 
+    void Awake()
+    {
+        // Automatically find and assign the energyBar and shieldBar if not assigned in the Inspector
+        if (energyBar == null)
+        {
+            energyBar = GameObject.Find("EnergyBar").GetComponent<Slider>();
+        }
+        if (shieldBar == null)
+        {
+            shieldBar = GameObject.Find("ShieldBar").GetComponent<Slider>();
+        }
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;  // Use Continuous Collision Detection
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         currentEnergy = maxEnergy;
         currentShield = maxShield;
         UpdateEnergyBar();
         UpdateShieldBar();
+
+        // Set the camera to follow the player (ball)
+        if (cam == null)
+        {
+            cam = Camera.main.transform;  // Assign the main camera if not already assigned
+        }
+
+        // Update the slider range dynamically if necessary
+        if (energyBar != null)
+        {
+            energyBar.minValue = 0;
+            energyBar.maxValue = maxEnergy;
+            energyBar.value = currentEnergy;
+        }
+
+        if (shieldBar != null)
+        {
+            shieldBar.minValue = 0;
+            shieldBar.maxValue = maxShield;
+            shieldBar.value = currentShield;
+        }
     }
 
     void Update()
     {
-        // Handle dash input
         if (Input.GetMouseButtonDown(1) && Time.time >= dashCooldownTime)
         {
             isDashing = true;
@@ -53,7 +86,6 @@ public class PlayerController : MonoBehaviour
             inDashBuffer = false;
         }
 
-        // Recover shield over time when not taking damage
         if (currentShield < maxShield)
         {
             currentShield += shieldRecoveryRate * Time.deltaTime;
@@ -69,14 +101,11 @@ public class PlayerController : MonoBehaviour
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
 
-        // Make the movement relative to the camera's direction
         if (movement.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
             movement = rotation * Vector3.forward;
-
-            // Reduce energy when moving
             currentEnergy -= movementEnergyConsumptionRate * Time.deltaTime;
             currentEnergy = Mathf.Clamp(currentEnergy, 0, maxEnergy);
             UpdateEnergyBar();
@@ -84,41 +113,39 @@ public class PlayerController : MonoBehaviour
 
         if (isDashing)
         {
-            rb.AddForce(movement * dashSpeed, ForceMode.Impulse);  // Apply dash speed
+            rb.AddForce(movement * dashSpeed, ForceMode.Impulse);
 
-            // Check if dash time is over and enter buffer period
             if (Time.time >= dashEndTime)
             {
                 isDashing = false;
                 inDashBuffer = true;
-                dashEndTime = Time.time + dashBufferTime; // Set the buffer end time
-                rb.velocity = Vector3.zero;  // Set velocity to zero after dash ends
+                dashEndTime = Time.time + dashBufferTime;
+                rb.velocity = Vector3.zero;
             }
         }
         else if (inDashBuffer)
         {
-            // If in buffer period, check if buffer time has elapsed
             if (Time.time >= dashEndTime)
             {
-                inDashBuffer = false;  // End the buffer period
+                inDashBuffer = false;
             }
         }
         else
         {
-            rb.AddForce(movement * speed);  // Normal movement
+            rb.AddForce(movement * speed);
         }
     }
 
     public bool IsDashing()
     {
-        return isDashing || inDashBuffer;  // Consider the player "dashing" during the buffer period
+        return isDashing || inDashBuffer;
     }
 
     void UpdateEnergyBar()
     {
         if (energyBar != null)
         {
-            energyBar.value = currentEnergy / maxEnergy;
+            energyBar.value = currentEnergy;
         }
     }
 
@@ -126,7 +153,7 @@ public class PlayerController : MonoBehaviour
     {
         if (shieldBar != null)
         {
-            shieldBar.value = currentShield / maxShield;
+            shieldBar.value = currentShield;
         }
     }
 
@@ -146,16 +173,13 @@ public class PlayerController : MonoBehaviour
 
             if (damageAfterProtection > 0)
             {
-                // Apply remaining damage to energy (HP)
                 currentEnergy -= damageAfterProtection;
                 currentEnergy = Mathf.Clamp(currentEnergy, 0, maxEnergy);
                 UpdateEnergyBar();
 
-                // If energy reaches 0, the player would be considered "dead" (you can implement logic for that)
                 if (currentEnergy <= 0)
                 {
                     Debug.Log("Player is out of energy (HP)!");
-                    // Implement player death or game over logic here
                 }
             }
 

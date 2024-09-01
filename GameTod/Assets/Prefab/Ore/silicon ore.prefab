@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 191276925885526842}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.4, y: 0.249, z: 5.25}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8502183791558627004}
@@ -178,7 +178,7 @@ MonoBehaviour:
   Stone1: {fileID: 0}
   portalPrefab: {fileID: 90707141276490278, guid: 4b70fd29d187e3f40af41b3830655f29, type: 3}
   portalSpawnPoint: {fileID: 715049749296900480}
-  portalSpawnChance: 15
+  portalSpawnChance: 10
 --- !u!65 &2873564796344747889
 BoxCollider:
   m_ObjectHideFlags: 0

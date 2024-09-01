@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 437782c95d804cb42b1bcc38bc08447d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.041579
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 437782c95d804cb42b1bcc38bc08447d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 437782c95d804cb42b1bcc38bc08447d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 16.380402
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 437782c95d804cb42b1bcc38bc08447d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -102,11 +102,11 @@ MonoBehaviour:
   energyBar: {fileID: 0}
   maxEnergy: 100
   currentEnergy: 0
-  movementEnergyConsumptionRate: 1
+  movementEnergyConsumptionRate: 0.5
   shieldBar: {fileID: 0}
   maxShield: 50
   currentShield: 0
-  shieldRecoveryRate: 5
+  shieldRecoveryRate: 0
   strength: 10
   weight: 5
   protection: 5
