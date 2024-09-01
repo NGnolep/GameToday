@@ -27,6 +27,10 @@ public class PlayerController : MonoBehaviour
     public float weight = 5f;
     public float protection = 5f;
 
+    public float invincibilityDuration = 2.0f; // Duration of invincibility
+    private bool isInvincible = false;
+    private float invincibilityEndTime;
+
     private bool isDashing = false;
     private bool inDashBuffer = false;
     private float dashEndTime;
@@ -78,6 +82,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isInvincible && Time.time >= invincibilityEndTime)
+        {
+            isInvincible = false;
+        }
+
         if (Input.GetMouseButtonDown(1) && Time.time >= dashCooldownTime)
         {
             isDashing = true;
@@ -159,6 +168,11 @@ public class PlayerController : MonoBehaviour
 
     public void ApplyDamage(float damage)
     {
+        if (isInvincible)
+        {
+            return; // Skip damage application if the player is invincible
+        }
+
         float damageAfterProtection = damage - protection;
 
         if (damageAfterProtection > 0)
@@ -184,6 +198,10 @@ public class PlayerController : MonoBehaviour
             }
 
             Debug.Log("Player took " + damageAfterProtection + " damage after protection and shield.");
+
+            // Activate invincibility
+            isInvincible = true;
+            invincibilityEndTime = Time.time + invincibilityDuration;
         }
     }
 }

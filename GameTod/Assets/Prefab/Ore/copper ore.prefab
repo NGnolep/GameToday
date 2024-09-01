@@ -185,7 +185,7 @@ MonoBehaviour:
   Stone1: {fileID: 0}
   portalPrefab: {fileID: 90707141276490278, guid: 4b70fd29d187e3f40af41b3830655f29, type: 3}
   portalSpawnPoint: {fileID: 7420337282640713950}
-  portalSpawnChance: 10
+  portalSpawnChance: 22.3
 --- !u!65 &1084980170846459458
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 8771153070522545801}
   m_Layer: 0
   m_Name: copper ore
-  m_TagString: Untagged
+  m_TagString: Ore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spikes Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8942594827400457345, guid: cfbadf37a7997d447a3675bed99a2e92, type: 3}
+      propertyPath: m_TagString
+      value: Spike
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

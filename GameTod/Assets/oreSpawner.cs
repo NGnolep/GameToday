@@ -6,30 +6,86 @@ public class OreAndSpikeSpawner : MonoBehaviour
 {
     public List<GameObject> ores;
     public GameObject spikePrefab;
-    public int currentLevel = 1;
     public int maxOresPerLevel = 20;
     public int oresPerStage = 3;
     public int levelsPerStage = 10;
     public int minSpikesPerLevel = 10;
     public int maxSpikesPerLevel = 20;
-    public float minDistanceBetweenOres = 3.0f; // Minimum distance between ores
-    public float minDistanceBetweenSpikes = 3.0f; // Minimum distance between spikes
-    public float minDistanceBetweenOreAndSpike = 3.0f; // Minimum distance between ores and spikes
+    public float minDistanceBetweenOres = 3.0f;
+    public float minDistanceBetweenSpikes = 3.0f;
+    public float minDistanceBetweenOreAndSpike = 3.0f;
 
-    private Terrain terrain;
-    private List<Vector3> orePositions = new List<Vector3>(); // Track spawned ore positions
-    private List<Vector3> spikePositions = new List<Vector3>(); // Track spawned spike positions
-    private float minSpawnHeight = 0f; // Minimum height for spawning
-    private float maxSpawnHeight = 1f; // Maximum height for spawning
+    private List<Terrain> childTerrains = new List<Terrain>();
+    private List<Vector3> orePositions = new List<Vector3>();
+    private List<Vector3> spikePositions = new List<Vector3>();
+    private float minSpawnHeight = 0f;
+    private float maxSpawnHeight = 1f;
+    private GameObject[] spawnedOres;
+    private GameObject[] spawnedSpikes;
 
-    public void Initialize(Terrain spawnedTerrain)
+    public void Initialize(Terrain parentTerrain)
     {
-        terrain = spawnedTerrain;
+        // Check and add the parent terrain to the list
+        if (parentTerrain != null)
+        {
+            childTerrains.Clear(); // Clear existing terrains before adding
+            childTerrains.Add(parentTerrain);
+            Debug.Log($"Added parent terrain: {parentTerrain.name}");
+        }
+        else
+        {
+            Debug.LogError("Parent terrain is missing a Terrain component!");
+            return;
+        }
+
+        // Ensure the parent terrain has children
+        if (parentTerrain.transform.childCount == 0)
+        {
+            Debug.LogError("No child terrains found under the parent terrain!");
+            return;
+        }
+
+        // Find all child terrains and add them to the list
+        foreach (Transform child in parentTerrain.transform)
+        {
+            Terrain terrain = child.GetComponent<Terrain>();
+            if (terrain != null)
+            {
+                childTerrains.Add(terrain);
+                Debug.Log($"Added child terrain: {terrain.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"Child {child.name} is missing a Terrain component!");
+            }
+        }
+
+        if (childTerrains.Count == 0)
+        {
+            Debug.LogError("No valid terrains found!");
+            return;
+        }
+
+        // Clear previously spawned objects if transitioning levels
+        if (LevelManager.Instance.IsTransitioningToNextLevel)
+        {
+            ClearSpawnedObjects();
+            LevelManager.Instance.IsTransitioningToNextLevel = false; // Reset transition flag
+        }
+
+        // Start spawning ores and spikes
         StartCoroutine(SpawnOresAndSpikes());
     }
 
     private IEnumerator SpawnOresAndSpikes()
     {
+        // Ensure terrains are present
+        if (childTerrains.Count == 0)
+        {
+            Debug.LogWarning("No terrains available for spawning.");
+            yield break;
+        }
+
         // Spawn ores
         yield return StartCoroutine(SpawnOres());
 
@@ -39,98 +95,108 @@ public class OreAndSpikeSpawner : MonoBehaviour
 
     private IEnumerator SpawnOres()
     {
-        if (terrain == null)
-        {
-            Debug.LogWarning("Terrain not assigned! Ensure that the terrain is properly initialized.");
-            yield break;
-        }
-
         int oresToInclude = GetOresToIncludeBasedOnLevel();
         int totalOresToSpawn = Mathf.Min(maxOresPerLevel, oresToInclude * 10);
         int oreCountPerType = Mathf.Max(10, totalOresToSpawn / oresToInclude);
 
-        Debug.Log($"Spawning {totalOresToSpawn} ores. Each ore type will spawn at least {oreCountPerType} times.");
-
-        // Ensure each ore type spawns at least the minimum amount
         for (int i = 0; i < oresToInclude; i++)
         {
             for (int j = 0; j < oreCountPerType; j++)
             {
                 Vector3 randomPosition = GetValidOrePosition();
 
-                if (randomPosition != Vector3.zero) // Ensure a valid position is found
+                if (randomPosition != Vector3.zero)
                 {
-                    Instantiate(ores[i], randomPosition, Quaternion.identity);
+                    GameObject ore = Instantiate(ores[i], randomPosition, Quaternion.identity);
                     orePositions.Add(randomPosition);
-                    Debug.Log($"Ore of type {i} spawned at: {randomPosition}");
-                }
-                else
-                {
-                    Debug.LogWarning("Failed to find a valid position for ore.");
+                    spawnedOres = AddToArray(spawnedOres, ore); // Track spawned ores
                 }
 
-                yield return null; // Wait until the next frame to prevent freezing
+                yield return null;
             }
         }
 
-        // If there are still more ores to spawn, continue to spawn remaining ores
         int remainingOresToSpawn = totalOresToSpawn - (oreCountPerType * oresToInclude);
         for (int i = 0; i < remainingOresToSpawn; i++)
         {
             Vector3 randomPosition = GetValidOrePosition();
 
-            if (randomPosition != Vector3.zero) // Ensure a valid position is found
+            if (randomPosition != Vector3.zero)
             {
                 int oreIndex = Random.Range(0, oresToInclude);
-                Instantiate(ores[oreIndex], randomPosition, Quaternion.identity);
+                GameObject ore = Instantiate(ores[oreIndex], randomPosition, Quaternion.identity);
                 orePositions.Add(randomPosition);
-                Debug.Log($"Additional ore of type {oreIndex} spawned at: {randomPosition}");
-            }
-            else
-            {
-                Debug.LogWarning("Failed to find a valid position for additional ore.");
+                spawnedOres = AddToArray(spawnedOres, ore); // Track spawned ores
             }
 
-            yield return null; // Wait until the next frame to prevent freezing
+            yield return null;
         }
     }
 
     private IEnumerator SpawnSpikes()
     {
-        if (terrain == null)
-        {
-            Debug.LogWarning("Terrain not assigned! Ensure that the terrain is properly initialized.");
-            yield break;
-        }
-
         int numSpikes = Random.Range(minSpikesPerLevel, maxSpikesPerLevel + 1);
-
-        Debug.Log($"Spawning {numSpikes} spikes.");
 
         for (int i = 0; i < numSpikes; i++)
         {
             Vector3 randomPosition = GetValidSpikePosition();
 
-            if (randomPosition != Vector3.zero) // Check if a valid position was found
+            if (randomPosition != Vector3.zero)
             {
-                // Spawn the spike
-                Instantiate(spikePrefab, randomPosition, Quaternion.identity);
-
-                // Store the position to prevent overlapping with other spikes and ores
+                GameObject spike = Instantiate(spikePrefab, randomPosition, Quaternion.identity);
                 spikePositions.Add(randomPosition);
-
-                Debug.Log($"Spike spawned at: {randomPosition}");
-            }
-            else
-            {
-                Debug.LogWarning("Failed to find a valid position for spike after several attempts.");
+                spawnedSpikes = AddToArray(spawnedSpikes, spike); // Track spawned spikes
             }
 
-            yield return null; // Wait until the next frame to prevent freezing
+            yield return null;
         }
     }
 
-    Vector3 GetRandomPositionOnTerrain()
+    private void ClearSpawnedObjects()
+    {
+        // Clear previously spawned ores and spikes
+        if (spawnedOres != null)
+        {
+            foreach (GameObject ore in spawnedOres)
+            {
+                if (ore != null)
+                    Destroy(ore);
+            }
+        }
+
+        if (spawnedSpikes != null)
+        {
+            foreach (GameObject spike in spawnedSpikes)
+            {
+                if (spike != null)
+                    Destroy(spike);
+            }
+        }
+
+        // Clear lists
+        orePositions.Clear();
+        spikePositions.Clear();
+    }
+
+    private GameObject[] AddToArray(GameObject[] array, GameObject item)
+    {
+        if (array == null)
+        {
+            return new GameObject[] { item };
+        }
+        else
+        {
+            GameObject[] newArray = new GameObject[array.Length + 1];
+            for (int i = 0; i < array.Length; i++)
+            {
+                newArray[i] = array[i];
+            }
+            newArray[array.Length] = item;
+            return newArray;
+        }
+    }
+
+    Vector3 GetRandomPositionOnTerrain(Terrain terrain)
     {
         TerrainData terrainData = terrain.terrainData;
         Vector3 terrainPosition = terrain.transform.position;
@@ -150,17 +216,17 @@ public class OreAndSpikeSpawner : MonoBehaviour
         do
         {
             validPositionFound = true;
-            position = GetRandomPositionOnTerrain();
 
-            // Ensure the height is within the specified range
-            float terrainHeight = terrain.SampleHeight(position) + terrain.transform.position.y;
+            Terrain selectedTerrain = childTerrains[Random.Range(0, childTerrains.Count)];
+            position = GetRandomPositionOnTerrain(selectedTerrain);
+
+            float terrainHeight = selectedTerrain.SampleHeight(position) + selectedTerrain.transform.position.y;
             if (terrainHeight < minSpawnHeight || terrainHeight > maxSpawnHeight)
             {
                 validPositionFound = false;
                 continue;
             }
 
-            // Check the distance from all previously spawned ores
             foreach (var orePosition in orePositions)
             {
                 if (Vector3.Distance(position, orePosition) < minDistanceBetweenOres)
@@ -170,7 +236,6 @@ public class OreAndSpikeSpawner : MonoBehaviour
                 }
             }
 
-            // Check the distance from all previously spawned spikes
             foreach (var spikePosition in spikePositions)
             {
                 if (Vector3.Distance(position, spikePosition) < minDistanceBetweenOreAndSpike)
@@ -196,22 +261,22 @@ public class OreAndSpikeSpawner : MonoBehaviour
     {
         Vector3 position;
         bool validPositionFound;
-        int attempts = 0;  // Counter to avoid infinite loops
+        int attempts = 0;
 
         do
         {
             validPositionFound = true;
-            position = GetRandomPositionOnTerrain();
 
-            // Ensure the height is within the specified range
-            float terrainHeight = terrain.SampleHeight(position) + terrain.transform.position.y;
+            Terrain selectedTerrain = childTerrains[Random.Range(0, childTerrains.Count)];
+            position = GetRandomPositionOnTerrain(selectedTerrain);
+
+            float terrainHeight = selectedTerrain.SampleHeight(position) + selectedTerrain.transform.position.y;
             if (terrainHeight < minSpawnHeight || terrainHeight > maxSpawnHeight)
             {
                 validPositionFound = false;
                 continue;
             }
 
-            // Check the distance from all previously spawned spikes
             foreach (var spikePosition in spikePositions)
             {
                 if (Vector3.Distance(position, spikePosition) < minDistanceBetweenSpikes)
@@ -221,7 +286,6 @@ public class OreAndSpikeSpawner : MonoBehaviour
                 }
             }
 
-            // Check the distance from all previously spawned ores
             foreach (var orePosition in orePositions)
             {
                 if (Vector3.Distance(position, orePosition) < minDistanceBetweenOreAndSpike)
@@ -232,7 +296,7 @@ public class OreAndSpikeSpawner : MonoBehaviour
             }
 
             attempts++;
-            if (attempts > 50)  // Limit attempts to find a valid position
+            if (attempts > 50)
             {
                 Debug.LogWarning("Could not find a valid position for spike after 50 attempts.");
                 return Vector3.zero;
@@ -245,9 +309,8 @@ public class OreAndSpikeSpawner : MonoBehaviour
 
     private int GetOresToIncludeBasedOnLevel()
     {
-        int stageNumber = (currentLevel - 1) / levelsPerStage + 1;
+        int stageNumber = (LevelManager.Instance.CurrentLevel - 1) / levelsPerStage + 1;
 
-        // Determine how many ore types should be included based on the level stage
         if (stageNumber <= 1)
             return Mathf.Min(3, ores.Count); // First stage level 1-10
         else if (stageNumber <= 2)

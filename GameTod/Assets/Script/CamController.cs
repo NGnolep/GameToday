@@ -58,11 +58,20 @@ public class CamController : MonoBehaviour
     void HandleCameraCollision()
     {
         RaycastHit hit;
-        if (Physics.Raycast(player.transform.position, transform.position - player.transform.position, out hit, distanceFromPlayer, collisionMask))
+        Vector3 directionToCamera = transform.position - player.transform.position;
+
+        if (Physics.Raycast(player.transform.position, directionToCamera.normalized, out hit, distanceFromPlayer, collisionMask))
         {
             float hitDistance = hit.distance;
-            Vector3 collisionPosition = player.transform.position + (transform.position - player.transform.position).normalized * hitDistance;
+            float clampedDistance = Mathf.Clamp(hitDistance, minDistanceFromPlayer, distanceFromPlayer);
+            Vector3 collisionPosition = player.transform.position + directionToCamera.normalized * clampedDistance;
             transform.position = collisionPosition;
+        }
+        else
+        {
+            // Set the camera to the desired position if no collision is detected
+            Vector3 desiredCameraPosition = player.transform.position + directionToCamera;
+            transform.position = desiredCameraPosition;
         }
     }
 }

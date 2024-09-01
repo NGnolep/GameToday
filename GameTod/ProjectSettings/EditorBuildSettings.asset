@@ -14,4 +14,34 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dungeons.unity
     guid: bd69ee54503a95649b4d2d2f931bd1dd
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 2.unity
+    guid: da6a2b076519798468a1a444b96b4ef9
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 3.unity
+    guid: fc562060b96a2334880ade9b2c079bd0
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 4.unity
+    guid: 87782291b3693fc4fafd77fb9f9d3174
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 5.unity
+    guid: 7c2fb951d83f5244f95e0cc8a0779c21
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 6.unity
+    guid: a8dddcad75bb2344a8153c57036aff7a
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 7.unity
+    guid: 6573a4c3f9351d845b9968b0b63aa049
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 8.unity
+    guid: 570325def00d8674c8caae2d1cd962ca
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 9.unity
+    guid: 8211636f98ff93542a224bb36676f2be
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 10.unity
+    guid: 69565dc3b07701f41ae592c8165942f4
+  - enabled: 1
+    path: Assets/Scenes/Dungeon 11.unity
+    guid: 54ad77a6377b43e49b263bd1b1ab830c
   m_configObjects: {}

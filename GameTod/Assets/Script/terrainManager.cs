@@ -37,6 +37,10 @@ public class TerrainManager : MonoBehaviour
             {
                 camController.player = player;
             }
+            else
+            {
+                Debug.LogError("CamController not found in the scene!");
+            }
         }
         else
         {
@@ -48,7 +52,21 @@ public class TerrainManager : MonoBehaviour
         OreAndSpikeSpawner spawnerScript = oreAndSpikeSpawner.GetComponent<OreAndSpikeSpawner>();
         if (spawnerScript != null)
         {
-            spawnerScript.Initialize(selectedTerrain.GetComponent<Terrain>());
+            // Ensure the selectedTerrain has a Terrain component
+            Terrain terrainComponent = selectedTerrain.GetComponent<Terrain>();
+            if (terrainComponent != null)
+            {
+                // Initialize with the selected terrain
+                spawnerScript.Initialize(terrainComponent);
+            }
+            else
+            {
+                Debug.LogError("Terrain component not found on the selected terrain object!");
+            }
+        }
+        else
+        {
+            Debug.LogError("OreAndSpikeSpawner script not found on the prefab!");
         }
     }
 
@@ -57,7 +75,15 @@ public class TerrainManager : MonoBehaviour
         Vector3 playerPosition = staircase.transform.position + new Vector3(0, 1, 0); // Adjust for correct placement
         GameObject player = Instantiate(playerPrefab, playerPosition, Quaternion.identity);
         // Ensure the player has the correct components
-        player.GetComponent<Rigidbody>().useGravity = true;
+        Rigidbody playerRigidbody = player.GetComponent<Rigidbody>();
+        if (playerRigidbody != null)
+        {
+            playerRigidbody.useGravity = true;
+        }
+        else
+        {
+            Debug.LogError("Rigidbody not found on the player prefab!");
+        }
 
         return player;
     }

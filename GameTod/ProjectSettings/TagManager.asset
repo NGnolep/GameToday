@@ -7,6 +7,9 @@ TagManager:
   - Staircase
   - EnergyBar
   - ShieldBar
+  - Terrain
+  - Ore
+  - Spike
   layers:
   - Default
   - TransparentFX
