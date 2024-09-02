@@ -36,9 +36,16 @@ public class PlayerController : MonoBehaviour
     private float dashEndTime;
     private float dashCooldownTime;
 
+    private AudioSource movementSoundSource;  // Sound for movement
+    private AudioSource shieldBreakSoundSource;  // Sound for shield break
+    private AudioSource damageSoundSource;  // Sound for player damage
+    private AudioSource bgmSource;  // Normal BGM
+    private AudioSource lowHealthBgmSource;  // Low health BGM
+
+    public float lowHealthThreshold = 20f;  // Threshold to trigger low health BGM
+
     void Awake()
     {
-        // Automatically find and assign the energyBar and shieldBar if not assigned in the Inspector
         if (energyBar == null)
         {
             energyBar = GameObject.Find("EnergyBar").GetComponent<Slider>();
@@ -58,13 +65,11 @@ public class PlayerController : MonoBehaviour
         UpdateEnergyBar();
         UpdateShieldBar();
 
-        // Set the camera to follow the player (ball)
         if (cam == null)
         {
-            cam = Camera.main.transform;  // Assign the main camera if not already assigned
+            cam = Camera.main.transform;
         }
 
-        // Update the slider range dynamically if necessary
         if (energyBar != null)
         {
             energyBar.minValue = 0;
@@ -77,6 +82,24 @@ public class PlayerController : MonoBehaviour
             shieldBar.minValue = 0;
             shieldBar.maxValue = maxShield;
             shieldBar.value = currentShield;
+        }
+
+        movementSoundSource = GameObject.Find("MovementSound").GetComponent<AudioSource>();
+        shieldBreakSoundSource = GameObject.Find("ShieldBreakSound").GetComponent<AudioSource>();
+        damageSoundSource = GameObject.Find("DamageSound").GetComponent<AudioSource>();
+        bgmSource = GameObject.Find("BGM").GetComponent<AudioSource>();
+        lowHealthBgmSource = GameObject.Find("LowHealthBGM").GetComponent<AudioSource>();
+
+        if (movementSoundSource != null)
+        {
+            movementSoundSource.loop = true;
+            movementSoundSource.Stop();
+        }
+
+        if (bgmSource != null)
+        {
+            bgmSource.loop = true;
+            bgmSource.Play();
         }
     }
 
@@ -100,6 +123,42 @@ public class PlayerController : MonoBehaviour
             currentShield += shieldRecoveryRate * Time.deltaTime;
             currentShield = Mathf.Clamp(currentShield, 0, maxShield);
             UpdateShieldBar();
+        }
+
+        if (movementSoundSource != null)
+        {
+            if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && !movementSoundSource.isPlaying)
+            {
+                Debug.Log("Playing movement sound");
+                movementSoundSource.Play();
+            }
+            else if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0 && movementSoundSource.isPlaying)
+            {
+                Debug.Log("Stopping movement sound");
+                movementSoundSource.Stop();
+            }
+        }
+
+        if (currentEnergy <= lowHealthThreshold && lowHealthBgmSource != null && !lowHealthBgmSource.isPlaying)
+        {
+            if (bgmSource != null && bgmSource.isPlaying)
+            {
+                Debug.Log("Stopping normal BGM");
+                bgmSource.Stop();  // Stop the normal BGM
+            }
+            Debug.Log("Playing low health BGM");
+            lowHealthBgmSource.loop = true;
+            lowHealthBgmSource.Play();  // Start low health BGM
+        }
+        else if (currentEnergy > lowHealthThreshold && lowHealthBgmSource != null && lowHealthBgmSource.isPlaying)
+        {
+            Debug.Log("Stopping low health BGM");
+            lowHealthBgmSource.Stop();  // Stop low health BGM
+            if (bgmSource != null)
+            {
+                Debug.Log("Resuming normal BGM");
+                bgmSource.Play();  // Resume normal BGM
+            }
         }
     }
 
@@ -162,6 +221,7 @@ public class PlayerController : MonoBehaviour
     {
         if (shieldBar != null)
         {
+            Debug.Log("Updating shield bar to: " + currentShield);
             shieldBar.value = currentShield;
         }
     }
@@ -183,6 +243,12 @@ public class PlayerController : MonoBehaviour
                 currentShield -= damageToShield;
                 damageAfterProtection -= damageToShield;
                 UpdateShieldBar();
+
+                if (currentShield <= 0 && shieldBreakSoundSource != null && !shieldBreakSoundSource.isPlaying)
+                {
+                    Debug.Log("Playing shield break sound");
+                    shieldBreakSoundSource.Play();
+                }
             }
 
             if (damageAfterProtection > 0)
@@ -190,6 +256,12 @@ public class PlayerController : MonoBehaviour
                 currentEnergy -= damageAfterProtection;
                 currentEnergy = Mathf.Clamp(currentEnergy, 0, maxEnergy);
                 UpdateEnergyBar();
+
+                if (damageSoundSource != null && !damageSoundSource.isPlaying)
+                {
+                    Debug.Log("Playing damage sound");
+                    damageSoundSource.Play();
+                }
 
                 if (currentEnergy <= 0)
                 {
@@ -199,7 +271,6 @@ public class PlayerController : MonoBehaviour
 
             Debug.Log("Player took " + damageAfterProtection + " damage after protection and shield.");
 
-            // Activate invincibility
             isInvincible = true;
             invincibilityEndTime = Time.time + invincibilityDuration;
         }

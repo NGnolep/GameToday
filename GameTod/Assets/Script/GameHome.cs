@@ -13,6 +13,10 @@ public class GameHome : MonoBehaviour
     public Button pauseButton;
     public Button goButton;
 
+    public AudioSource backgroundMusicSource;   // AudioSource for background music
+    public AudioSource soundEffectSource;       // AudioSource for sound effects
+    public AudioClip buttonClickSound;          // Sound for button clicks
+
     private RectTransform upgradePanelRectTransform;
     private RectTransform backpackPanelRectTransform;
     private RectTransform pausePanelRectTransform;
@@ -28,15 +32,36 @@ public class GameHome : MonoBehaviour
         backpackPanel.SetActive(false);
         pausePanel.SetActive(false);
 
+        // Initialize background music
+        if (backgroundMusicSource != null)
+        {
+            backgroundMusicSource.volume = 0.5f;  // Adjust volume as needed
+            backgroundMusicSource.loop = true;    // Loop the background music
+
+            if (backgroundMusicSource.clip != null)
+            {
+                backgroundMusicSource.Play();
+                Debug.Log("Background music started.");
+            }
+            else
+            {
+                Debug.LogWarning("No AudioClip assigned to backgroundMusicSource.");
+            }
+        }
+        else
+        {
+            Debug.LogError("BackgroundMusicSource is not assigned.");
+        }
+
         // Get RectTransform components
         upgradePanelRectTransform = upgradePanel.GetComponent<RectTransform>();
         backpackPanelRectTransform = backpackPanel.GetComponent<RectTransform>();
         pausePanelRectTransform = pausePanel.GetComponent<RectTransform>();
 
-        // Add listeners to buttons
-        upgradeButton.onClick.AddListener(OpenUpgradePanel);
-        pauseButton.onClick.AddListener(TogglePausePanel);
-        goButton.onClick.AddListener(GoToNextScene);
+        // Add listeners to buttons with sound
+        upgradeButton.onClick.AddListener(() => { OpenUpgradePanel(); PlayButtonClickSound(); });
+        pauseButton.onClick.AddListener(() => { TogglePausePanel(); PlayButtonClickSound(); });
+        goButton.onClick.AddListener(() => { GoToNextScene(); PlayButtonClickSound(); });
 
         // Check EventSystem
         if (FindObjectOfType<EventSystem>() == null)
@@ -66,6 +91,8 @@ public class GameHome : MonoBehaviour
             {
                 OpenPausePanel();
             }
+
+            PlayButtonClickSound();
         }
 
         // Handle 'B' key press
@@ -79,20 +106,34 @@ public class GameHome : MonoBehaviour
             {
                 OpenBackpackPanel();
             }
+
+            PlayButtonClickSound();
         }
 
         // Check for clicks outside of panels
         if (upgradePanel.activeSelf && Input.GetMouseButtonDown(0) && !IsPointerOverPanel(upgradePanelRectTransform))
         {
             CloseUpgradePanel();
+            PlayButtonClickSound();
         }
         if (backpackPanel.activeSelf && Input.GetMouseButtonDown(0) && !IsPointerOverPanel(backpackPanelRectTransform))
         {
             CloseBackpackPanel();
+            PlayButtonClickSound();
         }
         if (pausePanel.activeSelf && Input.GetMouseButtonDown(0) && !IsPointerOverPanel(pausePanelRectTransform))
         {
             ClosePausePanel();
+            PlayButtonClickSound();
+        }
+    }
+
+    public void PlayButtonClickSound()
+    {
+        // Play the button click sound
+        if (soundEffectSource != null && buttonClickSound != null)
+        {
+            soundEffectSource.PlayOneShot(buttonClickSound);
         }
     }
 
