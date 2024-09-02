@@ -697,6 +697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6019838146800306894}
+  - component: {fileID: 201032945206271046}
   m_Layer: 0
   m_Name: Stair2 (1)
   m_TagString: Staircase
@@ -721,6 +722,19 @@ Transform:
   - {fileID: 7359491680370484158}
   m_Father: {fileID: 8861616112264539572}
   m_LocalEulerAnglesHint: {x: 0, y: 40, z: 0}
+--- !u!114 &201032945206271046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6395413058970226804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898ba96ec544c4d4584e7a75f9f65656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRange: 3
 --- !u!1 &6873361997999842892
 GameObject:
   m_ObjectHideFlags: 0

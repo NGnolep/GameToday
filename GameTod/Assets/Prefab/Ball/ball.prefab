@@ -102,7 +102,7 @@ MonoBehaviour:
   energyBar: {fileID: 0}
   maxEnergy: 100
   currentEnergy: 0
-  movementEnergyConsumptionRate: 0.5
+  movementEnergyConsumptionRate: 1.8
   shieldBar: {fileID: 0}
   maxShield: 50
   currentShield: 0
@@ -110,6 +110,7 @@ MonoBehaviour:
   strength: 10
   weight: 5
   protection: 5
+  invincibilityDuration: 2
 --- !u!54 &5178434996569912357
 Rigidbody:
   m_ObjectHideFlags: 0

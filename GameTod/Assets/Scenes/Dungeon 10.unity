@@ -349,8 +349,8 @@ MonoBehaviour:
   terrain1Prefab: {fileID: 7711865545295911862, guid: 80487ea77cb3dcd48a0805e25f67548b, type: 3}
   terrain2Prefab: {fileID: 6873361997999842892, guid: ab5da03fe71fc2a43bda8171fb45e1df, type: 3}
   playerPrefab: {fileID: 5808721164632736252, guid: 979cb15609d6bcd469766c74fa8057f8, type: 3}
-  oreAndSpikeSpawnerPrefab: {fileID: 1887420577}
---- !u!1001 &1887420576
+  oreAndSpikeSpawnerPrefab: {fileID: 1683264525}
+--- !u!1001 &1683264524
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -411,10 +411,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8716409438254800231, guid: 6de3e21fecc1dc548b6628a478ce0ca7, type: 3}
-      propertyPath: oresPerStage
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8716409438254800231, guid: 6de3e21fecc1dc548b6628a478ce0ca7, type: 3}
       propertyPath: maxOresPerLevel
       value: 10
       objectReference: {fileID: 0}
@@ -454,16 +450,48 @@ PrefabInstance:
       propertyPath: ores.Array.data[7]
       value: 
       objectReference: {fileID: 5009806126983590981, guid: b24a91d7182c6e54c9f750d5586ce9b3, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8716409438254800231, guid: 6de3e21fecc1dc548b6628a478ce0ca7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6804777380751340152, guid: 6de3e21fecc1dc548b6628a478ce0ca7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1683264526}
   m_SourcePrefab: {fileID: 100100000, guid: 6de3e21fecc1dc548b6628a478ce0ca7, type: 3}
---- !u!1 &1887420577 stripped
+--- !u!1 &1683264525 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6804777380751340152, guid: 6de3e21fecc1dc548b6628a478ce0ca7, type: 3}
-  m_PrefabInstance: {fileID: 1887420576}
+  m_PrefabInstance: {fileID: 1683264524}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1683264526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683264525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0134106af93a945a56773ec9694c80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ores:
+  - {fileID: 7904246006317007460, guid: 6b306fd01afa5f744ad494b132fd8e42, type: 3}
+  - {fileID: 4481245423400954774, guid: d36247ed59e0b2f49823d18524c6a5aa, type: 3}
+  - {fileID: 4112350456721563073, guid: 23ba08ec8654f5943a93ad1f1d91bab9, type: 3}
+  - {fileID: 191276925885526842, guid: 7fc0eb00c8e661e43bf45ae98540ced0, type: 3}
+  - {fileID: 4840649093725940176, guid: 60aceb38426ab1c46bf31ca6853bcf39, type: 3}
+  - {fileID: 2861190868021705410, guid: 390d5540738d5d9499860491cf2e3480, type: 3}
+  - {fileID: 1794385773291160949, guid: 71edc8780dd87864e8c51edd7edaf63d, type: 3}
+  - {fileID: 5009806126983590981, guid: b24a91d7182c6e54c9f750d5586ce9b3, type: 3}
+  spikePrefab: {fileID: 8088688609991732235, guid: ddb0ca9b281f842419f5f5799a88f3f1, type: 3}
+  maxOresPerLevel: 20
+  minSpikesPerLevel: 10
+  maxSpikesPerLevel: 20
+  minDistanceBetweenOres: 3
+  minDistanceBetweenSpikes: 3
+  minDistanceBetweenOreAndSpike: 3
 --- !u!1001 &1987280439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -648,5 +676,5 @@ SceneRoots:
   - {fileID: 512865737}
   - {fileID: 808623310}
   - {fileID: 1268921523}
-  - {fileID: 1887420576}
   - {fileID: 1987280439}
+  - {fileID: 1683264524}

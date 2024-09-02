@@ -218,7 +218,7 @@ MonoBehaviour:
   Stone1: {fileID: 0}
   portalPrefab: {fileID: 90707141276490278, guid: 4b70fd29d187e3f40af41b3830655f29, type: 3}
   portalSpawnPoint: {fileID: 5678397624049135359}
-  portalSpawnChance: 10
+  portalSpawnChance: 15
 --- !u!65 &4887537494534103883
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -49,7 +49,7 @@ public class TerrainManager : MonoBehaviour
 
         // Spawn the OreAndSpikeSpawner and initialize it with the terrain
         GameObject oreAndSpikeSpawner = Instantiate(oreAndSpikeSpawnerPrefab);
-        OreAndSpikeSpawner spawnerScript = oreAndSpikeSpawner.GetComponent<OreAndSpikeSpawner>();
+        OreSpawner spawnerScript = oreAndSpikeSpawner.GetComponent<OreSpawner>();
         if (spawnerScript != null)
         {
             // Ensure the selectedTerrain has a Terrain component

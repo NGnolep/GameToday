@@ -2,16 +2,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement; // For scene management
+using UnityEngine.SceneManagement;
 
 public class GameHome : MonoBehaviour
 {
     public GameObject upgradePanel;
     public GameObject backpackPanel;
-    public GameObject pausePanel; // Reference to the pause panel
-    public Button upgradeButton; // Assign the upgrade button in the inspector
-    public Button pauseButton; // Assign the pause button in the inspector
-    public Button goButton; // Assign the Go button in the inspector
+    public GameObject pausePanel;
+    public Button upgradeButton;
+    public Button pauseButton;
+    public Button goButton;
 
     private RectTransform upgradePanelRectTransform;
     private RectTransform backpackPanelRectTransform;
@@ -19,7 +19,11 @@ public class GameHome : MonoBehaviour
 
     void Start()
     {
-        // Ensure the main menu is active and other panels are inactive at the start
+        // Ensure cursor is visible and not locked
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        // Ensure UI panels are properly initialized
         upgradePanel.SetActive(false);
         backpackPanel.SetActive(false);
         pausePanel.SetActive(false);
@@ -29,15 +33,21 @@ public class GameHome : MonoBehaviour
         backpackPanelRectTransform = backpackPanel.GetComponent<RectTransform>();
         pausePanelRectTransform = pausePanel.GetComponent<RectTransform>();
 
-        // Add listeners to the buttons
+        // Add listeners to buttons
         upgradeButton.onClick.AddListener(OpenUpgradePanel);
         pauseButton.onClick.AddListener(TogglePausePanel);
-        goButton.onClick.AddListener(GoToNextScene); // Add listener for Go button
+        goButton.onClick.AddListener(GoToNextScene);
+
+        // Check EventSystem
+        if (FindObjectOfType<EventSystem>() == null)
+        {
+            Debug.LogError("EventSystem not found in the scene!");
+        }
     }
 
     void Update()
     {
-        // Toggle the pause panel if Escape is pressed
+        // Handle Escape key press
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (upgradePanel.activeSelf)
@@ -58,7 +68,7 @@ public class GameHome : MonoBehaviour
             }
         }
 
-        // Toggle the backpack panel if 'B' is pressed
+        // Handle 'B' key press
         if (Input.GetKeyDown(KeyCode.B))
         {
             if (backpackPanel.activeSelf)
@@ -71,19 +81,15 @@ public class GameHome : MonoBehaviour
             }
         }
 
-        // Check if the user clicked outside the upgrade panel
+        // Check for clicks outside of panels
         if (upgradePanel.activeSelf && Input.GetMouseButtonDown(0) && !IsPointerOverPanel(upgradePanelRectTransform))
         {
             CloseUpgradePanel();
         }
-
-        // Check if the user clicked outside the backpack panel
         if (backpackPanel.activeSelf && Input.GetMouseButtonDown(0) && !IsPointerOverPanel(backpackPanelRectTransform))
         {
             CloseBackpackPanel();
         }
-
-        // Check if the user clicked outside the pause panel
         if (pausePanel.activeSelf && Input.GetMouseButtonDown(0) && !IsPointerOverPanel(pausePanelRectTransform))
         {
             ClosePausePanel();

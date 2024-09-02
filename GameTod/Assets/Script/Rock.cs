@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Rock : MonoBehaviour
@@ -10,6 +8,7 @@ public class Rock : MonoBehaviour
     public GameObject portalPrefab;  // Assign the portal prefab in the inspector
     public Transform portalSpawnPoint;  // Assign a position for the portal to spawn, or use the rock's position
     [Range(0, 100)] public float portalSpawnChance = 15f; // Set the percentage chance for a portal to spawn
+    public GameObject orePrefab; // Reference to the ore prefab associated with this rock
 
     void OnCollisionEnter(Collision collision)
     {
@@ -26,6 +25,10 @@ public class Rock : MonoBehaviour
                     Debug.Log("Rock destroyed!");
                     Destroy(Stone);
                     Destroy(Stone1); // Destroy the rock
+
+                    // Add ore to inventory
+                    InventoryManager.Instance.AddOre(orePrefab); // Add the destroyed ore to the inventory
+
                     TrySpawnPortal(); // Attempt to spawn a portal when the rock is destroyed
                 }
                 else

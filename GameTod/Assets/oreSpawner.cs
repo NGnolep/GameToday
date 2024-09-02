@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OreAndSpikeSpawner : MonoBehaviour
+public class OreSpawner : MonoBehaviour
 {
     public List<GameObject> ores;
     public GameObject spikePrefab;
     public int maxOresPerLevel = 20;
-    public int oresPerStage = 3;
-    public int levelsPerStage = 10;
     public int minSpikesPerLevel = 10;
     public int maxSpikesPerLevel = 20;
     public float minDistanceBetweenOres = 3.0f;
@@ -95,11 +93,10 @@ public class OreAndSpikeSpawner : MonoBehaviour
 
     private IEnumerator SpawnOres()
     {
-        int oresToInclude = GetOresToIncludeBasedOnLevel();
-        int totalOresToSpawn = Mathf.Min(maxOresPerLevel, oresToInclude * 10);
-        int oreCountPerType = Mathf.Max(10, totalOresToSpawn / oresToInclude);
+        int totalOresToSpawn = Mathf.Min(maxOresPerLevel, ores.Count * 10);
+        int oreCountPerType = Mathf.Max(10, totalOresToSpawn / ores.Count);
 
-        for (int i = 0; i < oresToInclude; i++)
+        for (int i = 0; i < ores.Count; i++)
         {
             for (int j = 0; j < oreCountPerType; j++)
             {
@@ -116,14 +113,14 @@ public class OreAndSpikeSpawner : MonoBehaviour
             }
         }
 
-        int remainingOresToSpawn = totalOresToSpawn - (oreCountPerType * oresToInclude);
+        int remainingOresToSpawn = totalOresToSpawn - (oreCountPerType * ores.Count);
         for (int i = 0; i < remainingOresToSpawn; i++)
         {
             Vector3 randomPosition = GetValidOrePosition();
 
             if (randomPosition != Vector3.zero)
             {
-                int oreIndex = Random.Range(0, oresToInclude);
+                int oreIndex = Random.Range(0, ores.Count);
                 GameObject ore = Instantiate(ores[oreIndex], randomPosition, Quaternion.identity);
                 orePositions.Add(randomPosition);
                 spawnedOres = AddToArray(spawnedOres, ore); // Track spawned ores
@@ -305,17 +302,5 @@ public class OreAndSpikeSpawner : MonoBehaviour
         } while (!validPositionFound);
 
         return position;
-    }
-
-    private int GetOresToIncludeBasedOnLevel()
-    {
-        int stageNumber = (LevelManager.Instance.CurrentLevel - 1) / levelsPerStage + 1;
-
-        if (stageNumber <= 1)
-            return Mathf.Min(3, ores.Count); // First stage level 1-10
-        else if (stageNumber <= 2)
-            return Mathf.Min(6, ores.Count); // Second stage level 11-20
-        else
-            return ores.Count; // Final stage level 21-25
     }
 }
